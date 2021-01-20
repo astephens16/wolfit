@@ -23,15 +23,11 @@ def pretty_date(time):
     'just now', etc
     """
     now = datetime.utcnow()
-    if type(time) is int:
-        diff = now - datetime.fromtimestamp(time)
-    elif isinstance(time, datetime):
+    if isinstance(time, datetime):
         diff = now - time
     second_diff = diff.seconds
     day_diff = diff.days
 
-    if day_diff < 0:
-        return "just about now"
 
     if day_diff == 0:
         return less_than_day(second_diff)
