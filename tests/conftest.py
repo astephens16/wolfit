@@ -3,7 +3,7 @@ from os import environ, getcwd
 
 import pytest
 
-if 'WOLFIT_SETTINGS' not in environ:
+if 'WOLFIT_SETTINGS' not in environ: # pragma: no cover
     environ["WOLFIT_SETTINGS"] = f"{getcwd()}/test.settings"
 
 
