@@ -82,11 +82,16 @@ def test_post_vote_goes_down_after_voting(client, test_user, single_post):
     assert single_post.vote_count == 0
     single_post.down_vote(test_user)
     assert single_post.vote_count == -1
-    
-def test_a_user_can_only_vote_once(client, test_user, single_post):
+
+def test_a_user_can_only_up_vote_once(client, test_user, single_post):
     single_post.up_vote(test_user)
     single_post.up_vote(test_user)  # Should throw an exception
     assert single_post.vote_count == 1
+
+def test_a_user_can_only_down_vote_once(client, test_user, single_post):
+    single_post.down_vote(test_user)
+    single_post.down_vote(test_user)  # Should throw an exception
+    assert single_post.vote_count == -1
 
 
 def test_posts_have_categories():
