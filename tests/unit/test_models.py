@@ -128,7 +128,7 @@ def test_comments_can_be_counted(client, test_user, single_post):
     assert single_post.comment_count() == 2
 
 
-def test_comments_can_be_voted_on(client, test_user, single_post_with_comment):
+def test_comments_can_be_up_voted_on(client, test_user, single_post_with_comment):
     comment = single_post_with_comment.comments[0]
     new_user = User(username="robot", email="robot@gmail.com")
     db.session.add(new_user)
@@ -137,6 +137,15 @@ def test_comments_can_be_voted_on(client, test_user, single_post_with_comment):
     # All comments start with a default vote count of 1
     assert comment.vote_count == 2
 
+def test_comments_can_be_down_voted_on(client, test_user, single_post_with_comment):
+    comment = single_post_with_comment.comments[0]
+    new_user = User(username="robot", email="robot@gmail.com")
+    db.session.add(new_user)
+    db.session.commit()
+    comment.down_vote(new_user)
+    # All comments start with a default vote count of 1
+    assert comment.vote_count == 0
+
 
 def test_user_cannot_change_vote_count_for_own_comment(
     client, test_user, single_post_with_comment
@@ -144,6 +153,8 @@ def test_user_cannot_change_vote_count_for_own_comment(
     c = single_post_with_comment.comments[0]
     assert c.vote_count == 1
     c.up_vote(test_user)
+    assert c.vote_count == 1
+    c.down_vote(test_user)
     assert c.vote_count == 1
 
 
